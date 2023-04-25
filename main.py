@@ -8,6 +8,12 @@ FINANCE_DATA_FILE = DATA_FOLDER_DIRECTORY + "/finance_data.json"
 ENCRYPTION_KEY_FILE = DATA_FOLDER_DIRECTORY + "/encryption_key.key"
 
 encryption_key = None
+finance_data_json = None
+
+total_balance = 0.00
+monthly_income = {}
+monthly_expenses = {}
+savings = {}
 
 
 def main():
@@ -18,7 +24,7 @@ def main():
     main_menu()
 
     # Cleanup
-    print("\nThank you for using Self Budgeter! :)\n")
+    #print("\nThank you for using Self Budgeter! :)\n")
 
     # TESTING
     # print(encryption_key)
@@ -27,8 +33,7 @@ def main():
 
 def main_menu():
     print(
-        """\nWelcome to Self Budgeter
-    Please select an option:
+        """\nWelcome to Self Budgeter\nPlease select an option:
     1. Summary
     2. Add Income
     3. Add Expense
@@ -39,9 +44,9 @@ def main_menu():
     if user_input == "1":
         display_summary()
     elif user_input == "2":
-        add_income_menu()
+        display_add_income_menu()
     elif user_input == "3":
-        add_expense_menu()
+        display_add_expense_menu()
     elif user_input == "4":
         print("Exit")
         return
@@ -51,30 +56,51 @@ def main_menu():
 
 
 def display_summary():
-    print("Summary")
+    print("\nSummary")
+    print("Total Balance: " + str(total_balance))
+    
+    #print("Total Balance: " + str(finance_data_json["total_balance"]))
+    #for key, value in finance_data_json["monthly_income"].items():
+    #    print(key.capitalize() + ": " + str(value))
+    #print("Monthly Income: " + str(finance_data_json["monthly_income"]))
 
 
-def add_income_menu():
+def display_add_income_menu():
     print("Add Income")
 
 
-def add_expense_menu():
+def display_add_expense_menu():
     print("Add Expense")
+
+
+def add_income():
+    print("Add Income")
 
 
 # Checking for data folder on user's computer
 def check_for_data():
-    global encryption_key  # Using global variable to store encryption key
-
     print("\nChecking for data folder...")
+
     if os.path.exists(DATA_FOLDER_DIRECTORY):
         print("Data folder exists")
-        # Using encryption_key.key file on user's pc to get encryption key
-        with open(ENCRYPTION_KEY_FILE, "rb") as key_file:
-            encryption_key = key_file.read()
+        get_data()
     else:
         print("Data folder does not exist...")
         create_data_files()
+
+
+def get_data():
+    global encryption_key  # Using global variable to store encryption key
+    global finance_data_json  # Using global variable to store finance data
+    global total_balance
+
+    # Using encryption_key.key file on user's pc to get encryption key
+    with open(ENCRYPTION_KEY_FILE, "rb") as key_file:
+        encryption_key = key_file.read()
+    # Using encryption key to decrypt finance_data.json file
+    finance_data_json = read_data(FINANCE_DATA_FILE, encryption_key)
+    total_balance = float(finance_data_json["total_balance"])
+
 
 
 # read_data and write_data functions securely through encryption
@@ -116,6 +142,8 @@ def create_data_files():
     }
 
     print("Creating data files in documents folder...")
+
+    # Create data folder in documents folder
     os.makedirs(DATA_FOLDER_DIRECTORY)
 
     # Use a key from a file or generate and store it in a file (DO NOT hardcode the key in your code)
@@ -123,6 +151,7 @@ def create_data_files():
     with open(ENCRYPTION_KEY_FILE, "wb") as key_file:
         key_file.write(encryption_key)
 
+    # Create finance_data.json file using newly generated encryption key
     write_data(FINANCE_DATA_FILE, finance_data_template, encryption_key)
 
 
