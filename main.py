@@ -1,4 +1,16 @@
+import os
+import json
+
+
+DATA_FOLDER_DIRECTORY = "../../Documents/Self_Budgeter/data"
+
+FINANCE_DATA_FILE = DATA_FOLDER_DIRECTORY + "/finance_data.json"
+MONTHLY_INCOME_FILE = DATA_FOLDER_DIRECTORY + "/monthly_income.json"
+MONTHLY_EXPENSES_FILE = DATA_FOLDER_DIRECTORY + "/monthly_expenses.json"
+
+
 def main():
+    check_for_data()
     main_menu()
     print("\nThank you for using Self Budgeter! :)\n")
 
@@ -38,6 +50,19 @@ def add_income_menu():
 
 def add_expense_menu():
     print("Add Expense")
+
+
+# Checking for data folder on user's computer
+def check_for_data():
+    print("\nChecking for data folder...")
+
+    if os.path.exists(DATA_FOLDER_DIRECTORY):
+        print("Data folder exists")
+    else:
+        print(
+            "Data folder does not exist, creating Data folder in User's Documents folder..."
+        )
+        os.makedirs(DATA_FOLDER_DIRECTORY)
 
 
 if __name__ == "__main__":
