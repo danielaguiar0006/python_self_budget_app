@@ -5,7 +5,7 @@ from encryption_util import generate_key, encrypt_data, decrypt_data
 
 DATA_FOLDER_DIRECTORY = "../../Documents/Self_Budgeter/data"
 FINANCE_DATA_FILE = DATA_FOLDER_DIRECTORY + "/finance_data.json"
-ENCRYPTION_KEY_FILE = DATA_FOLDER_DIRECTORY + "/key.key"
+ENCRYPTION_KEY_FILE = DATA_FOLDER_DIRECTORY + "/encryption_key.key"
 
 encryption_key = None
 
@@ -19,6 +19,10 @@ def main():
 
     # Cleanup
     print("\nThank you for using Self Budgeter! :)\n")
+
+    # TESTING
+    # print(encryption_key)
+    # print(read_data(FINANCE_DATA_FILE, encryption_key))
 
 
 def main_menu():
@@ -60,11 +64,12 @@ def add_expense_menu():
 
 # Checking for data folder on user's computer
 def check_for_data():
-    print("\nChecking for data folder...")
+    global encryption_key  # Using global variable to store encryption key
 
+    print("\nChecking for data folder...")
     if os.path.exists(DATA_FOLDER_DIRECTORY):
         print("Data folder exists")
-
+        # Using encryption_key.key file on user's pc to get encryption key
         with open(ENCRYPTION_KEY_FILE, "rb") as key_file:
             encryption_key = key_file.read()
     else:
