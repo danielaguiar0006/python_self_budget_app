@@ -11,22 +11,22 @@ encryption_key = None
 finance_data_json = None
 
 total_balance = 0.00
-monthly_income = {}
-monthly_expenses = {}
-savings = {}
+monthly_income = []
+monthly_expenses = []
+savings = []
 
 
 def main():
-    # Setup
+    #* Setup
     check_for_data()
 
-    # Main loop
+    #* Main loop
     main_menu()
 
-    # Cleanup
+    #* Cleanup
     #print("\nThank you for using Self Budgeter! :)\n")
 
-    # TESTING
+    #! TESTING
     # print(encryption_key)
     # print(read_data(FINANCE_DATA_FILE, encryption_key))
 
@@ -58,6 +58,7 @@ def main_menu():
 def display_summary():
     print("\nSummary")
     print("Total Balance: " + str(total_balance))
+    print("Monthly Income: " + str(add_totals(monthly_income)))
     
     #print("Total Balance: " + str(finance_data_json["total_balance"]))
     #for key, value in finance_data_json["monthly_income"].items():
@@ -83,24 +84,10 @@ def check_for_data():
 
     if os.path.exists(DATA_FOLDER_DIRECTORY):
         print("Data folder exists")
-        get_data()
+        update_variables_data()
     else:
         print("Data folder does not exist...")
         create_data_files()
-
-
-def get_data():
-    global encryption_key  # Using global variable to store encryption key
-    global finance_data_json  # Using global variable to store finance data
-    global total_balance
-
-    # Using encryption_key.key file on user's pc to get encryption key
-    with open(ENCRYPTION_KEY_FILE, "rb") as key_file:
-        encryption_key = key_file.read()
-    # Using encryption key to decrypt finance_data.json file
-    finance_data_json = read_data(FINANCE_DATA_FILE, encryption_key)
-    total_balance = float(finance_data_json["total_balance"])
-
 
 
 # read_data and write_data functions securely through encryption
@@ -153,6 +140,34 @@ def create_data_files():
 
     # Create finance_data.json file using newly generated encryption key
     write_data(FINANCE_DATA_FILE, finance_data_template, encryption_key)
+
+
+def update_variables_data():
+    global encryption_key
+    global finance_data_json
+    global total_balance
+    global monthly_income
+
+    # Using encryption_key.key file on user's pc to get encryption key
+    with open(ENCRYPTION_KEY_FILE, "rb") as key_file:
+        encryption_key = key_file.read()
+    # Using encryption key to decrypt finance_data.json file
+    finance_data_json = read_data(FINANCE_DATA_FILE, encryption_key)
+
+    # Updating global variables
+    total_balance = float(finance_data_json["total_balance"])
+    # Looping through monthly_income dictionary and appending to monthly_income list
+    for key, value in finance_data_json["monthly_income"].items():
+        monthly_income.append({key:value})
+
+
+# Used to add up totals in a list of dictionaries
+def add_totals(list_of_dicts):
+    total = 0
+    for dict in list_of_dicts:
+        for key, value in dict.items():
+            total += value
+    return total
 
 
 if __name__ == "__main__":
