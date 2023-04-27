@@ -1,9 +1,11 @@
 class FinanceData:
-    def __init__(self):
-        self.total_balance = 0.00
-        self.monthly_income = []
-        self.monthly_expenses = []
-        self.savings = []
+    def __init__(
+        self, total_balance=0, monthly_income=None, monthly_expenses=None, savings=None
+    ):
+        self.total_balance = total_balance
+        self.monthly_income = monthly_income or {}
+        self.monthly_expenses = monthly_expenses or {}
+        self.savings = savings or {}
 
     def update(self, data):
         self.total_balance = float(data["total_balance"])
@@ -21,3 +23,11 @@ class FinanceData:
             for key, value in dict.items():
                 total += value
         return total
+
+    def to_dict(self):
+        return {
+            "total_balance": self.total_balance,
+            "monthly_income": self.monthly_income,
+            "monthly_expenses": self.monthly_expenses,
+            "savings": self.savings,
+        }

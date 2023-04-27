@@ -1,15 +1,14 @@
 """Contains the main function and the user interface (menus, display functions)."""
 
-import os
 from data_handler import (
     read_data,
     write_data,
     check_if_data_exist,
     create_data_files,
+    initialize_variables_data,
     ENCRYPTION_KEY_FILE,
     DATA_FOLDER_DIRECTORY,
 )
-from finance import initialize_variables_data
 
 
 finance_data = None
@@ -26,7 +25,7 @@ def main():
     # print("\nThank you for using Self Budgeter! :)\n")
 
     #! TESTING
-    # print(monthly_income)
+    print("done")
     # print(total_balance)
     # print(decrypted_finance_data_json)
 
