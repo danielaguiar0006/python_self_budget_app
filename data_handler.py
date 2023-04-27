@@ -40,7 +40,7 @@ def check_if_data_exist():
 
 
 # Create default data files
-def create_data_files():
+def create_data_files(): #? should be a better way to do this... (should i make a default template with finance_data class? || have a setup wizard? that asks for initial data?)
     finance_data_template = {
         "total_balance": 3,
         "monthly_income": {

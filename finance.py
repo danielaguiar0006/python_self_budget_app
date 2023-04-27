@@ -18,8 +18,8 @@ monthly_expenses = []
 savings = []
 
 
-# Updating global variables
-def update_variables_data():
+# Initialize global variables
+def initialize_variables_data():
     finance_data = FinanceData()
 
     # Using encryption_key.key file on user's pc to get encryption key

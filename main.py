@@ -9,7 +9,7 @@ from data_handler import (
     ENCRYPTION_KEY_FILE,
     DATA_FOLDER_DIRECTORY,
 )
-from finance import update_variables_data
+from finance import initialize_variables_data
 
 
 finance_data = None
@@ -17,16 +17,7 @@ finance_data = None
 
 def main():
     # * Setup
-    print("\nChecking for data folder...")
-    if check_if_data_exist():
-        print("Data folder exists")
-        global finance_data
-        finance_data = update_variables_data()
-    else:
-        print("Data folder does not exist...")
-        print("Creating data files in documents folder...")
-        create_data_files()
-        finance_data = update_variables_data()
+    setup()
 
     # * Main loop
     main_menu()
@@ -72,16 +63,29 @@ def display_summary():  #! TODO: finish display_summary function
     )
 
 
-def display_add_income_menu():
+def display_add_income_menu():  #! TODO: finish display_add_income_menu function
     print("Add Income")
 
 
-def display_add_expense_menu():
+def display_add_expense_menu():  #! TODO: finish display_add_expense_menu function
     print("Add Expense")
 
 
-def add_income():
+def add_income():  #! TODO: finish add_income function
     print("Add Income")
+
+
+def setup():
+    print("\nChecking for data folder...")
+    if check_if_data_exist():
+        print("Data folder exists")
+        global finance_data
+        finance_data = initialize_variables_data()
+    else:
+        print("Data folder does not exist...")
+        print("Creating data files in documents folder...")
+        create_data_files()
+        finance_data = initialize_variables_data()
 
 
 if __name__ == "__main__":
